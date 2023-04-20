@@ -16,7 +16,7 @@ static void swap_mirroring(Genie* genie);
 
 
 void load_genie(char* filename, Mapper* mapper){
-    Genie* genie = calloc(1, sizeof(Genie));
+    Genie* genie = (Genie*)calloc(1, sizeof(Genie));
     load_file(filename, NULL, &genie->g_mapper);
     mapper->genie = genie;
     genie->mapper = mapper;

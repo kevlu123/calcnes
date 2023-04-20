@@ -4,8 +4,9 @@
 #include "ppu.h"
 #include "mmu.h"
 #include "mapper.h"
-#include "gfx.h"
-#include "timers.h"
+#include <stdlib.h>
+//#include "gfx.h"
+//#include "timers.h"
 
 
 // frame rate in Hz
@@ -27,15 +28,15 @@ typedef struct Emulator{
     struct PPU ppu;
     struct Memory mem;
     struct Mapper mapper;
-    struct GraphicsContext g_ctx;
-    struct Timer timer;
+    //struct GraphicsContext g_ctx;
+    //struct Timer timer;
 
     TVSystem type;
 
-    double time_diff;
+    //double time_diff;
 
-    uint8_t exit;
-    uint8_t pause;
+    //uint8_t exit;
+    //uint8_t pause;
 } Emulator;
 
 

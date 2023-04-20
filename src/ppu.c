@@ -6,12 +6,40 @@
 #include "cpu6502.h"
 #include "emulator.h"
 
+// extern "C" {
+// #include "fxlib.h"
+// }
+
 static uint16_t render_background(PPU* ppu);
 static uint16_t render_sprites(PPU* ppu, uint16_t bg_addr, uint8_t* back_priority);
 
+extern int colour = 0;
+
+static void DrawPixel(PPU* ppu, int x, int y, uint32_t palette_addr) {
+    if (x % 2 == 0 && y % 4 == 0) {
+        x /= 2;
+        y /= 4;
+        if (x < 128 && y < 64) {
+            int dark = palette_addr < 32 || palette_addr % 16 >= 14;
+            int i = (y * 128 + x) / 8;
+            int bit = 7 - (y * 128 + x) % 8;
+            ppu->screen[i] |= ((dark ^ colour) & 1) << bit;
+            //int c = palette_addr < 32;
+            //Bdisp_SetPoint_DDVRAM(x, y, (c ^ frameNumber) & 1);
+
+        }
+    }
+}
+
+//static void to_pixel_format(const uint32_t* in, uint32_t* out, size_t size){
+//    for(int i = 0; i < size; i++) {
+//        out[i] = (in[i] & 0xff000000) | ((in[i] << 16) & 0x00ff0000) | (in[i] & 0x0000ff00) | ((in[i] >> 16) & 0x000000ff);
+//    }
+//}
+
 
 void init_ppu(struct Emulator* emulator){
-    to_pixel_format(nes_palette_raw, nes_palette, 64, SDL_PIXELFORMAT_ABGR8888);
+    //to_pixel_format(nes_palette_raw, nes_palette, 64);
     struct PPU* ppu = &emulator->ppu;
     ppu->emulator = emulator;
     ppu->mapper = &emulator->mapper;
@@ -36,7 +64,7 @@ void reset_ppu(PPU* ppu){
     ppu->frames = 0;
     ppu->OAM_cache_len = 0;
     memset(ppu->OAM_cache, 0, 8);
-    memset(ppu->screen, 0, sizeof(ppu->screen));
+    //memset(ppu->bitScreen, 0, sizeof(ppu->bitScreen));
 }
 
 void set_address(PPU* ppu, uint8_t address){
@@ -194,7 +222,7 @@ void execute_ppu(PPU* ppu){
                 palette_addr = palette_addr_sp;
 
             palette_addr = !palette_addr ? ppu->palette[0] : ppu->palette[palette_addr];
-            ppu->screen[ppu->scanlines * VISIBLE_DOTS + ppu->dots - 1] = nes_palette[palette_addr];
+            DrawPixel(ppu, x, ppu->scanlines, palette_addr);
         }
         if(ppu->dots == VISIBLE_DOTS + 1 && ppu->mask & SHOW_BG){
             if((ppu->v & FINE_Y) != FINE_Y) {
@@ -310,7 +338,7 @@ static uint16_t render_background(PPU* ppu){
     return palette_addr | (((attr >> ((ppu->v >> 4) & 4 | ppu->v & 2)) & 0x3) << 2);
 }
 
-static uint16_t render_sprites(PPU* restrict ppu, uint16_t bg_addr, uint8_t* restrict back_priority){
+static uint16_t render_sprites(PPU* ppu, uint16_t bg_addr, uint8_t* back_priority){
     // 4 bytes per sprite
     // byte 0 -> y index
     // byte 1 -> tile index

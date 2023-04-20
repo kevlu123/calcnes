@@ -1,6 +1,6 @@
 #include "controller.h"
-#include "gamepad.h"
-#include "touchpad.h"
+//#include "gamepad.h"
+//#include "touchpad.h"
 
 
 void init_joypad(struct JoyPad* joyPad, uint8_t player){
@@ -27,6 +27,7 @@ void write_joypad(struct JoyPad* joyPad, uint8_t data){
         joyPad->index = 0;
 }
 
+/*
 void keyboard_mapper(struct JoyPad* joyPad, SDL_Event* event){
     uint16_t key = 0;
     switch (event->key.keysym.sym) {
@@ -73,6 +74,7 @@ void update_joypad(struct JoyPad* joyPad, SDL_Event* event){
     keyboard_mapper(joyPad, event);
     gamepad_mapper(joyPad, event);
 }
+*/
 
 void turbo_trigger(struct JoyPad* joyPad){
     // toggle BUTTON_A AND BUTTON_B if TURBO_A and TURBO_B are set respectively

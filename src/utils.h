@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdio.h>
-#include <stdint.h>
-#include <SDL2/SDL.h>
+#include "stdint.h"
+//# include <SDL2/SDL.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #define _WIN 1
@@ -12,17 +12,17 @@
 #define EXIT_FAILURE 1
 #endif
 
-#ifdef __ANDROID__
+//#ifdef __ANDROID__
 
-#include <android/log.h>
-#define TAG "NES_EMULATOR"
-#define PRINTF(FMT, ...) __android_log_print(ANDROID_LOG_DEBUG, FMT, TAG, __VA_ARGS__)
-
-#else
-
-#define PRINTF(...) printf(__VA_ARGS__)
-
-#endif
+//# include <android/log.h>
+//#define TAG "NES_EMULATOR"
+//#define PRINTF(FMT, ...) __android_log_print(ANDROID_LOG_DEBUG, FMT, TAG, __VA_ARGS__)
+//
+//#else
+//
+//#define PRINTF(...) printf(__VA_ARGS__)
+//
+//#endif
 
 #define LOGLEVEL 1
 #define TRACER 0
@@ -46,11 +46,11 @@ enum LogLevel{
     INFO,
 };
 
-size_t file_size(FILE* file);
+//size_t file_size(FILE* file);
 void LOG(enum LogLevel logLevel, const char* fmt, ...);
 void TRACE(const char* fmt, ...);
 
 // midpoint circle algorithm rendering utils
-int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius);
-int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius);
-void to_pixel_format(const uint32_t* restrict in, uint32_t* restrict out, size_t size, uint32_t format);
+//int SDL_RenderDrawCircle(SDL_Renderer * renderer, int x, int y, int radius);
+//int SDL_RenderFillCircle(SDL_Renderer * renderer, int x, int y, int radius);
+//void to_pixel_format(const uint32_t* restrict in, uint32_t* restrict out, size_t size, uint32_t format);

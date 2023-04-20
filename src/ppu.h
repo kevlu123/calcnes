@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include "stdint.h"
 
 #include "utils.h"
 #include "mapper.h"
@@ -40,7 +40,9 @@ struct Emulator;
 
 typedef struct PPU{
     size_t frames;
-    uint32_t screen[VISIBLE_DOTS * VISIBLE_SCANLINES];
+    unsigned char screen[128 * 64 / 8];
+    //uint32_t screen[VISIBLE_DOTS * VISIBLE_SCANLINES];
+    //uint8_t bitScreen[VISIBLE_DOTS * VISIBLE_SCANLINES / 8];
     uint8_t V_RAM[0x800];
     uint8_t OAM[256];
     uint8_t OAM_cache[8];
